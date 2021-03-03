@@ -8,6 +8,7 @@
 - [ ] client
     - [ ] bootstrap
 - [ ] resolver
+- [ ] clean up
 - [ ] ... TBA
 
 ### Missing dependencies
