@@ -12,7 +12,8 @@ defmodule Envoy.Config.Route.V3.RouteConfiguration do
           request_headers_to_add: [Envoy.Config.Core.V3.HeaderValueOption.t()],
           request_headers_to_remove: [String.t()],
           most_specific_header_mutations_wins: boolean,
-          validate_clusters: Google.Protobuf.BoolValue.t() | nil
+          validate_clusters: Google.Protobuf.BoolValue.t() | nil,
+          max_direct_response_body_size_bytes: Google.Protobuf.UInt32Value.t() | nil
         }
   defstruct [
     :name,
@@ -24,7 +25,8 @@ defmodule Envoy.Config.Route.V3.RouteConfiguration do
     :request_headers_to_add,
     :request_headers_to_remove,
     :most_specific_header_mutations_wins,
-    :validate_clusters
+    :validate_clusters,
+    :max_direct_response_body_size_bytes
   ]
 
   field :name, 1, type: :string
@@ -37,6 +39,7 @@ defmodule Envoy.Config.Route.V3.RouteConfiguration do
   field :request_headers_to_remove, 8, repeated: true, type: :string
   field :most_specific_header_mutations_wins, 10, type: :bool
   field :validate_clusters, 7, type: Google.Protobuf.BoolValue
+  field :max_direct_response_body_size_bytes, 11, type: Google.Protobuf.UInt32Value
 end
 
 defmodule Envoy.Config.Route.V3.Vhds do

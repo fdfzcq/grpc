@@ -518,11 +518,13 @@ defmodule Envoy.Config.Route.V3.RouteAction.UpgradeConfig.ConnectConfig do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          proxy_protocol_config: Envoy.Config.Core.V3.ProxyProtocolConfig.t() | nil
+          proxy_protocol_config: Envoy.Config.Core.V3.ProxyProtocolConfig.t() | nil,
+          allow_post: boolean
         }
-  defstruct [:proxy_protocol_config]
+  defstruct [:proxy_protocol_config, :allow_post]
 
   field :proxy_protocol_config, 1, type: Envoy.Config.Core.V3.ProxyProtocolConfig
+  field :allow_post, 2, type: :bool
 end
 
 defmodule Envoy.Config.Route.V3.RouteAction.UpgradeConfig do
@@ -838,6 +840,7 @@ defmodule Envoy.Config.Route.V3.RedirectAction do
   field :port_redirect, 8, type: :uint32
   field :path_redirect, 2, type: :string, oneof: 1
   field :prefix_rewrite, 5, type: :string, oneof: 1
+  field :regex_rewrite, 9, type: Envoy.Type.Matcher.V3.RegexMatchAndSubstitute, oneof: 1
 
   field :response_code, 3,
     type: Envoy.Config.Route.V3.RedirectAction.RedirectResponseCode,
@@ -1040,6 +1043,7 @@ defmodule Envoy.Config.Route.V3.RateLimit.Action do
     oneof: 0
 
   field :metadata, 8, type: Envoy.Config.Route.V3.RateLimit.Action.MetaData, oneof: 0
+  field :extension, 9, type: Envoy.Config.Core.V3.TypedExtensionConfig, oneof: 0
 end
 
 defmodule Envoy.Config.Route.V3.RateLimit.Override.DynamicMetadata do
@@ -1148,4 +1152,18 @@ defmodule Envoy.Config.Route.V3.InternalRedirectPolicy do
   field :redirect_response_codes, 2, repeated: true, type: :uint32
   field :predicates, 3, repeated: true, type: Envoy.Config.Core.V3.TypedExtensionConfig
   field :allow_cross_scheme_redirect, 4, type: :bool
+end
+
+defmodule Envoy.Config.Route.V3.FilterConfig do
+  @moduledoc false
+  use Protobuf, syntax: :proto3
+
+  @type t :: %__MODULE__{
+          config: Google.Protobuf.Any.t() | nil,
+          is_optional: boolean
+        }
+  defstruct [:config, :is_optional]
+
+  field :config, 1, type: Google.Protobuf.Any
+  field :is_optional, 2, type: :bool
 end

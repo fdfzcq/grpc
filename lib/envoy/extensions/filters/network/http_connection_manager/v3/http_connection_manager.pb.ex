@@ -140,6 +140,7 @@ defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.HttpConnecti
 
   @type t :: %__MODULE__{
           route_specifier: {atom, any},
+          strip_port_mode: {atom, any},
           codec_type:
             Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.HttpConnectionManager.CodecType.t(),
           stat_prefix: String.t(),
@@ -192,6 +193,7 @@ defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.HttpConnecti
         }
   defstruct [
     :route_specifier,
+    :strip_port_mode,
     :codec_type,
     :stat_prefix,
     :http_filters,
@@ -231,6 +233,7 @@ defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.HttpConnecti
   ]
 
   oneof :route_specifier, 0
+  oneof :strip_port_mode, 1
 
   field :codec_type, 1,
     type:
@@ -311,6 +314,7 @@ defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.HttpConnecti
     type: Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.LocalReplyConfig
 
   field :strip_matching_host_port, 39, type: :bool
+  field :strip_any_host_port, 42, type: :bool, oneof: 1
   field :stream_error_on_invalid_http_message, 40, type: Google.Protobuf.BoolValue
 end
 
@@ -357,14 +361,12 @@ defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.Rds do
 
   @type t :: %__MODULE__{
           config_source: Envoy.Config.Core.V3.ConfigSource.t() | nil,
-          route_config_name: String.t(),
-          rds_resource_locator: Xds.Core.V3.ResourceLocator.t() | nil
+          route_config_name: String.t()
         }
-  defstruct [:config_source, :route_config_name, :rds_resource_locator]
+  defstruct [:config_source, :route_config_name]
 
   field :config_source, 1, type: Envoy.Config.Core.V3.ConfigSource
   field :route_config_name, 2, type: :string
-  field :rds_resource_locator, 3, type: Xds.Core.V3.ResourceLocator
 end
 
 defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.ScopedRouteConfigurationsList do
@@ -500,14 +502,16 @@ defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.HttpFilter d
 
   @type t :: %__MODULE__{
           config_type: {atom, any},
-          name: String.t()
+          name: String.t(),
+          is_optional: boolean
         }
-  defstruct [:config_type, :name]
+  defstruct [:config_type, :name, :is_optional]
 
   oneof :config_type, 0
   field :name, 1, type: :string
   field :typed_config, 4, type: Google.Protobuf.Any, oneof: 0
   field :config_discovery, 5, type: Envoy.Config.Core.V3.ExtensionConfigSource, oneof: 0
+  field :is_optional, 6, type: :bool
 end
 
 defmodule Envoy.Extensions.Filters.Network.HttpConnectionManager.V3.RequestIDExtension do

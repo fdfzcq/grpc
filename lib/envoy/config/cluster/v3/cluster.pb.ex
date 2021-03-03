@@ -138,14 +138,12 @@ defmodule Envoy.Config.Cluster.V3.Cluster.EdsClusterConfig do
 
   @type t :: %__MODULE__{
           eds_config: Envoy.Config.Core.V3.ConfigSource.t() | nil,
-          service_name: String.t(),
-          eds_resource_locator: Xds.Core.V3.ResourceLocator.t() | nil
+          service_name: String.t()
         }
-  defstruct [:eds_config, :service_name, :eds_resource_locator]
+  defstruct [:eds_config, :service_name]
 
   field :eds_config, 1, type: Envoy.Config.Core.V3.ConfigSource
   field :service_name, 2, type: :string
-  field :eds_resource_locator, 3, type: Xds.Core.V3.ResourceLocator
 end
 
 defmodule Envoy.Config.Cluster.V3.Cluster.LbSubsetConfig.LbSubsetSelector do
@@ -363,18 +361,18 @@ defmodule Envoy.Config.Cluster.V3.Cluster.RefreshRate do
   field :max_interval, 2, type: Google.Protobuf.Duration
 end
 
-defmodule Envoy.Config.Cluster.V3.Cluster.PrefetchPolicy do
+defmodule Envoy.Config.Cluster.V3.Cluster.PreconnectPolicy do
   @moduledoc false
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          per_upstream_prefetch_ratio: Google.Protobuf.DoubleValue.t() | nil,
-          predictive_prefetch_ratio: Google.Protobuf.DoubleValue.t() | nil
+          per_upstream_preconnect_ratio: Google.Protobuf.DoubleValue.t() | nil,
+          predictive_preconnect_ratio: Google.Protobuf.DoubleValue.t() | nil
         }
-  defstruct [:per_upstream_prefetch_ratio, :predictive_prefetch_ratio]
+  defstruct [:per_upstream_preconnect_ratio, :predictive_preconnect_ratio]
 
-  field :per_upstream_prefetch_ratio, 1, type: Google.Protobuf.DoubleValue
-  field :predictive_prefetch_ratio, 2, type: Google.Protobuf.DoubleValue
+  field :per_upstream_preconnect_ratio, 1, type: Google.Protobuf.DoubleValue
+  field :predictive_preconnect_ratio, 2, type: Google.Protobuf.DoubleValue
 end
 
 defmodule Envoy.Config.Cluster.V3.Cluster.TypedExtensionProtocolOptionsEntry do
@@ -439,7 +437,7 @@ defmodule Envoy.Config.Cluster.V3.Cluster do
           track_timeout_budgets: boolean,
           upstream_config: Envoy.Config.Core.V3.TypedExtensionConfig.t() | nil,
           track_cluster_stats: Envoy.Config.Cluster.V3.TrackClusterStats.t() | nil,
-          prefetch_policy: Envoy.Config.Cluster.V3.Cluster.PrefetchPolicy.t() | nil,
+          preconnect_policy: Envoy.Config.Cluster.V3.Cluster.PreconnectPolicy.t() | nil,
           connection_pool_per_downstream_connection: boolean
         }
   defstruct [
@@ -484,7 +482,7 @@ defmodule Envoy.Config.Cluster.V3.Cluster do
     :track_timeout_budgets,
     :upstream_config,
     :track_cluster_stats,
-    :prefetch_policy,
+    :preconnect_policy,
     :connection_pool_per_downstream_connection
   ]
 
@@ -509,11 +507,20 @@ defmodule Envoy.Config.Cluster.V3.Cluster do
   field :circuit_breakers, 10, type: Envoy.Config.Cluster.V3.CircuitBreakers
 
   field :upstream_http_protocol_options, 46,
-    type: Envoy.Config.Core.V3.UpstreamHttpProtocolOptions
+    type: Envoy.Config.Core.V3.UpstreamHttpProtocolOptions,
+    deprecated: true
 
-  field :common_http_protocol_options, 29, type: Envoy.Config.Core.V3.HttpProtocolOptions
-  field :http_protocol_options, 13, type: Envoy.Config.Core.V3.Http1ProtocolOptions
-  field :http2_protocol_options, 14, type: Envoy.Config.Core.V3.Http2ProtocolOptions
+  field :common_http_protocol_options, 29,
+    type: Envoy.Config.Core.V3.HttpProtocolOptions,
+    deprecated: true
+
+  field :http_protocol_options, 13,
+    type: Envoy.Config.Core.V3.Http1ProtocolOptions,
+    deprecated: true
+
+  field :http2_protocol_options, 14,
+    type: Envoy.Config.Core.V3.Http2ProtocolOptions,
+    deprecated: true
 
   field :typed_extension_protocol_options, 36,
     repeated: true,
@@ -547,6 +554,7 @@ defmodule Envoy.Config.Cluster.V3.Cluster do
 
   field :protocol_selection, 26,
     type: Envoy.Config.Cluster.V3.Cluster.ClusterProtocolSelection,
+    deprecated: true,
     enum: true
 
   field :upstream_connection_options, 30, type: Envoy.Config.Cluster.V3.UpstreamConnectionOptions
@@ -558,7 +566,7 @@ defmodule Envoy.Config.Cluster.V3.Cluster do
   field :track_timeout_budgets, 47, type: :bool, deprecated: true
   field :upstream_config, 48, type: Envoy.Config.Core.V3.TypedExtensionConfig
   field :track_cluster_stats, 49, type: Envoy.Config.Cluster.V3.TrackClusterStats
-  field :prefetch_policy, 50, type: Envoy.Config.Cluster.V3.Cluster.PrefetchPolicy
+  field :preconnect_policy, 50, type: Envoy.Config.Cluster.V3.Cluster.PreconnectPolicy
   field :connection_pool_per_downstream_connection, 51, type: :bool
 end
 

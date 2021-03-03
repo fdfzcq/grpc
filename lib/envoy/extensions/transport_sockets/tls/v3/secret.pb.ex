@@ -16,13 +16,11 @@ defmodule Envoy.Extensions.TransportSockets.Tls.V3.SdsSecretConfig do
 
   @type t :: %__MODULE__{
           name: String.t(),
-          sds_resource_locator: Xds.Core.V3.ResourceLocator.t() | nil,
           sds_config: Envoy.Config.Core.V3.ConfigSource.t() | nil
         }
-  defstruct [:name, :sds_resource_locator, :sds_config]
+  defstruct [:name, :sds_config]
 
   field :name, 1, type: :string
-  field :sds_resource_locator, 3, type: Xds.Core.V3.ResourceLocator
   field :sds_config, 2, type: Envoy.Config.Core.V3.ConfigSource
 end
 

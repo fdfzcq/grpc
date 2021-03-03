@@ -225,3 +225,11 @@ defmodule Envoy.Config.Core.V3.GrpcProtocolOptions do
 
   field :http2_protocol_options, 1, type: Envoy.Config.Core.V3.Http2ProtocolOptions
 end
+
+defmodule Envoy.Config.Core.V3.Http3ProtocolOptions do
+  @moduledoc false
+  use Protobuf, syntax: :proto3
+
+  @type t :: %__MODULE__{}
+  defstruct []
+end

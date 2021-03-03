@@ -22,7 +22,8 @@ defmodule Envoy.Config.Cluster.V3.OutlierDetection do
           enforcing_failure_percentage: Google.Protobuf.UInt32Value.t() | nil,
           enforcing_failure_percentage_local_origin: Google.Protobuf.UInt32Value.t() | nil,
           failure_percentage_minimum_hosts: Google.Protobuf.UInt32Value.t() | nil,
-          failure_percentage_request_volume: Google.Protobuf.UInt32Value.t() | nil
+          failure_percentage_request_volume: Google.Protobuf.UInt32Value.t() | nil,
+          max_ejection_time: Google.Protobuf.Duration.t() | nil
         }
   defstruct [
     :consecutive_5xx,
@@ -44,7 +45,8 @@ defmodule Envoy.Config.Cluster.V3.OutlierDetection do
     :enforcing_failure_percentage,
     :enforcing_failure_percentage_local_origin,
     :failure_percentage_minimum_hosts,
-    :failure_percentage_request_volume
+    :failure_percentage_request_volume,
+    :max_ejection_time
   ]
 
   field :consecutive_5xx, 1, type: Google.Protobuf.UInt32Value
@@ -67,4 +69,5 @@ defmodule Envoy.Config.Cluster.V3.OutlierDetection do
   field :enforcing_failure_percentage_local_origin, 18, type: Google.Protobuf.UInt32Value
   field :failure_percentage_minimum_hosts, 19, type: Google.Protobuf.UInt32Value
   field :failure_percentage_request_volume, 20, type: Google.Protobuf.UInt32Value
+  field :max_ejection_time, 21, type: Google.Protobuf.Duration
 end

@@ -20,14 +20,16 @@ defmodule Envoy.Config.Trace.V3.ZipkinConfig do
           trace_id_128bit: boolean,
           shared_span_context: Google.Protobuf.BoolValue.t() | nil,
           collector_endpoint_version:
-            Envoy.Config.Trace.V3.ZipkinConfig.CollectorEndpointVersion.t()
+            Envoy.Config.Trace.V3.ZipkinConfig.CollectorEndpointVersion.t(),
+          collector_hostname: String.t()
         }
   defstruct [
     :collector_cluster,
     :collector_endpoint,
     :trace_id_128bit,
     :shared_span_context,
-    :collector_endpoint_version
+    :collector_endpoint_version,
+    :collector_hostname
   ]
 
   field :collector_cluster, 1, type: :string
@@ -38,4 +40,6 @@ defmodule Envoy.Config.Trace.V3.ZipkinConfig do
   field :collector_endpoint_version, 5,
     type: Envoy.Config.Trace.V3.ZipkinConfig.CollectorEndpointVersion,
     enum: true
+
+  field :collector_hostname, 6, type: :string
 end

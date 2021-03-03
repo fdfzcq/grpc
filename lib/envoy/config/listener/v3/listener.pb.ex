@@ -64,6 +64,7 @@ defmodule Envoy.Config.Listener.V3.Listener do
           name: String.t(),
           address: Envoy.Config.Core.V3.Address.t() | nil,
           filter_chains: [Envoy.Config.Listener.V3.FilterChain.t()],
+          use_original_dst: Google.Protobuf.BoolValue.t() | nil,
           default_filter_chain: Envoy.Config.Listener.V3.FilterChain.t() | nil,
           per_connection_buffer_limit_bytes: Google.Protobuf.UInt32Value.t() | nil,
           metadata: Envoy.Config.Core.V3.Metadata.t() | nil,
@@ -84,12 +85,14 @@ defmodule Envoy.Config.Listener.V3.Listener do
           reuse_port: boolean,
           access_log: [Envoy.Config.Accesslog.V3.AccessLog.t()],
           udp_writer_config: Envoy.Config.Core.V3.TypedExtensionConfig.t() | nil,
-          tcp_backlog_size: Google.Protobuf.UInt32Value.t() | nil
+          tcp_backlog_size: Google.Protobuf.UInt32Value.t() | nil,
+          bind_to_port: Google.Protobuf.BoolValue.t() | nil
         }
   defstruct [
     :name,
     :address,
     :filter_chains,
+    :use_original_dst,
     :default_filter_chain,
     :per_connection_buffer_limit_bytes,
     :metadata,
@@ -109,16 +112,18 @@ defmodule Envoy.Config.Listener.V3.Listener do
     :reuse_port,
     :access_log,
     :udp_writer_config,
-    :tcp_backlog_size
+    :tcp_backlog_size,
+    :bind_to_port
   ]
 
   field :name, 1, type: :string
   field :address, 2, type: Envoy.Config.Core.V3.Address
   field :filter_chains, 3, repeated: true, type: Envoy.Config.Listener.V3.FilterChain
+  field :use_original_dst, 4, type: Google.Protobuf.BoolValue
   field :default_filter_chain, 25, type: Envoy.Config.Listener.V3.FilterChain
   field :per_connection_buffer_limit_bytes, 5, type: Google.Protobuf.UInt32Value
   field :metadata, 6, type: Envoy.Config.Core.V3.Metadata
-  field :deprecated_v1, 7, type: Envoy.Config.Listener.V3.Listener.DeprecatedV1
+  field :deprecated_v1, 7, type: Envoy.Config.Listener.V3.Listener.DeprecatedV1, deprecated: true
   field :drain_type, 8, type: Envoy.Config.Listener.V3.Listener.DrainType, enum: true
   field :listener_filters, 9, repeated: true, type: Envoy.Config.Listener.V3.ListenerFilter
   field :listener_filters_timeout, 15, type: Google.Protobuf.Duration
@@ -138,4 +143,5 @@ defmodule Envoy.Config.Listener.V3.Listener do
   field :access_log, 22, repeated: true, type: Envoy.Config.Accesslog.V3.AccessLog
   field :udp_writer_config, 23, type: Envoy.Config.Core.V3.TypedExtensionConfig
   field :tcp_backlog_size, 24, type: Google.Protobuf.UInt32Value
+  field :bind_to_port, 26, type: Google.Protobuf.BoolValue
 end

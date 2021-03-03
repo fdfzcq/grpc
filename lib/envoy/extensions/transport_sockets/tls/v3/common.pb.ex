@@ -129,7 +129,8 @@ defmodule Envoy.Extensions.TransportSockets.Tls.V3.CertificateValidationContext 
           crl: Envoy.Config.Core.V3.DataSource.t() | nil,
           allow_expired_certificate: boolean,
           trust_chain_verification:
-            Envoy.Extensions.TransportSockets.Tls.V3.CertificateValidationContext.TrustChainVerification.t()
+            Envoy.Extensions.TransportSockets.Tls.V3.CertificateValidationContext.TrustChainVerification.t(),
+          custom_validator_config: Envoy.Config.Core.V3.TypedExtensionConfig.t() | nil
         }
   defstruct [
     :trusted_ca,
@@ -140,7 +141,8 @@ defmodule Envoy.Extensions.TransportSockets.Tls.V3.CertificateValidationContext 
     :require_signed_certificate_timestamp,
     :crl,
     :allow_expired_certificate,
-    :trust_chain_verification
+    :trust_chain_verification,
+    :custom_validator_config
   ]
 
   field :trusted_ca, 1, type: Envoy.Config.Core.V3.DataSource
@@ -156,4 +158,6 @@ defmodule Envoy.Extensions.TransportSockets.Tls.V3.CertificateValidationContext 
     type:
       Envoy.Extensions.TransportSockets.Tls.V3.CertificateValidationContext.TrustChainVerification,
     enum: true
+
+  field :custom_validator_config, 12, type: Envoy.Config.Core.V3.TypedExtensionConfig
 end

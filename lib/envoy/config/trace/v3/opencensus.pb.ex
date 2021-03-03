@@ -52,8 +52,8 @@ defmodule Envoy.Config.Trace.V3.OpenCensusConfig do
   field :stackdriver_project_id, 4, type: :string
   field :stackdriver_address, 10, type: :string
   field :stackdriver_grpc_service, 13, type: Envoy.Config.Core.V3.GrpcService
-  field :zipkin_exporter_enabled, 5, type: :bool
-  field :zipkin_url, 6, type: :string
+  field :zipkin_exporter_enabled, 5, type: :bool, deprecated: true
+  field :zipkin_url, 6, type: :string, deprecated: true
   field :ocagent_exporter_enabled, 11, type: :bool
   field :ocagent_address, 12, type: :string
   field :ocagent_grpc_service, 14, type: Envoy.Config.Core.V3.GrpcService

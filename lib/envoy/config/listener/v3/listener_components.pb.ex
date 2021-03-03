@@ -22,6 +22,7 @@ defmodule Envoy.Config.Listener.V3.Filter do
   oneof :config_type, 0
   field :name, 1, type: :string
   field :typed_config, 4, type: Google.Protobuf.Any, oneof: 0
+  field :config_discovery, 5, type: Envoy.Config.Core.V3.ExtensionConfigSource, oneof: 0
 end
 
 defmodule Envoy.Config.Listener.V3.FilterChainMatch do
@@ -109,7 +110,7 @@ defmodule Envoy.Config.Listener.V3.FilterChain do
 
   field :filter_chain_match, 1, type: Envoy.Config.Listener.V3.FilterChainMatch
   field :filters, 3, repeated: true, type: Envoy.Config.Listener.V3.Filter
-  field :use_proxy_proto, 4, type: Google.Protobuf.BoolValue
+  field :use_proxy_proto, 4, type: Google.Protobuf.BoolValue, deprecated: true
   field :metadata, 5, type: Envoy.Config.Core.V3.Metadata
   field :transport_socket, 6, type: Envoy.Config.Core.V3.TransportSocket
   field :transport_socket_connect_timeout, 9, type: Google.Protobuf.Duration

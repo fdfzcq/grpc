@@ -98,6 +98,20 @@ defmodule Envoy.Config.Core.V3.Extension do
   field :disabled, 5, type: :bool
 end
 
+defmodule Envoy.Config.Core.V3.Node.DynamicParametersEntry do
+  @moduledoc false
+  use Protobuf, map: true, syntax: :proto3
+
+  @type t :: %__MODULE__{
+          key: String.t(),
+          value: Xds.Core.V3.ContextParams.t() | nil
+        }
+  defstruct [:key, :value]
+
+  field :key, 1, type: :string
+  field :value, 2, type: Xds.Core.V3.ContextParams
+end
+
 defmodule Envoy.Config.Core.V3.Node do
   @moduledoc false
   use Protobuf, syntax: :proto3
@@ -107,6 +121,7 @@ defmodule Envoy.Config.Core.V3.Node do
           id: String.t(),
           cluster: String.t(),
           metadata: Google.Protobuf.Struct.t() | nil,
+          dynamic_parameters: %{String.t() => Xds.Core.V3.ContextParams.t() | nil},
           locality: Envoy.Config.Core.V3.Locality.t() | nil,
           user_agent_name: String.t(),
           extensions: [Envoy.Config.Core.V3.Extension.t()],
@@ -118,6 +133,7 @@ defmodule Envoy.Config.Core.V3.Node do
     :id,
     :cluster,
     :metadata,
+    :dynamic_parameters,
     :locality,
     :user_agent_name,
     :extensions,
@@ -129,6 +145,12 @@ defmodule Envoy.Config.Core.V3.Node do
   field :id, 1, type: :string
   field :cluster, 2, type: :string
   field :metadata, 3, type: Google.Protobuf.Struct
+
+  field :dynamic_parameters, 12,
+    repeated: true,
+    type: Envoy.Config.Core.V3.Node.DynamicParametersEntry,
+    map: true
+
   field :locality, 4, type: Envoy.Config.Core.V3.Locality
   field :user_agent_name, 6, type: :string
   field :user_agent_version, 7, type: :string, oneof: 0
