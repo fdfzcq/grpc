@@ -8,7 +8,5 @@ defmodule GRPC.XDS.EDS.Service do
         Envoy.Service.Discovery.V3.DiscoveryRequest,
         Envoy.Service.Discovery.V3.DiscoveryResponse
 
-    rpc :FetchEndpoints,
-        Envoy.Service.Discovery.V3.DiscoveryRequest,
-        Envoy.Service.Discovery.V3.DiscoveryResponse
+    # TODO add delta API
 end
